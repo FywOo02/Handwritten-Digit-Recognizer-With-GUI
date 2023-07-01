@@ -12,13 +12,13 @@
 - The Handwritten Digit Recognizer is a device with a GUI interface developed on PyQt5. The principle is to train a MNIST digital dataset with a CNN model built on the keras package to obtain a recognizer to be able to recognize new samples of digit data brought by the user
 
 <div align=center>
-<img src="https://github.com/FywOo02/Boston-House-Pricing-Forecast/blob/master/myplot.png">
+<img src="https://github.com/FywOo02/Handwritten-Digit-Recognizer-With-GUI/blob/main/Resorces/mnist%20graph.png">
 </div>
 
 ## What is the structure of this CNN model
 - 4 convolutional layers + 3 maximum pooling layers + 1 flatten layer + 1 fully connected layer
 <div align=center>
-<img src="https://github.com/FywOo02/Boston-House-Pricing-Forecast/blob/master/myplot.png">
+<img src="https://github.com/FywOo02/Handwritten-Digit-Recognizer-With-GUI/blob/main/Resorces/CNN.png">
 </div>
 
 
@@ -41,7 +41,7 @@ git clone https://github.com/FywOo02/Handwritten-Digit-Recognizer-With-GUI.git
 python start.py
 ```
 <div align=center>
-<img src="https://github.com/FywOo02/Boston-House-Pricing-Forecast/blob/master/myplot.png">
+<img src="https://github.com/FywOo02/Handwritten-Digit-Recognizer-With-GUI/blob/main/Resorces/result.png">
 </div>
 
 ## File Descriptions
