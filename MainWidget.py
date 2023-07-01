@@ -12,7 +12,6 @@ from PaintBoard import PaintBoard
 
 import tensorflow as tf
 import numpy as np
-
 try:
     import tensorflow.python.keras as keras
 except:
@@ -27,39 +26,40 @@ class MainWidget(QWidget):
         '''
         super().__init__(Parent)
 
-        self.__InitData()  # 先初始化数据，再初始化界面
-        self.__InitView()
+        self.__InitData()  # init data
+        self.__InitView()  # init view
 
     def __InitData(self):
         '''
-                  初始化成员变量
+                  init members
         '''
         self.__paintBoard = PaintBoard(self)
-        # 获取颜色列表(字符串类型)
+        # get the color list
         self.__colorList = QColor.colorNames()
 
     def __InitView(self):
         '''
-                  初始化界面
+                  init view
         '''
         self.setFixedSize(640, 480)
         self.setWindowTitle("Handwritten Digit Recognition")
 
-        # 新建一个水平布局作为本窗体的主布局
+        # Create a new horizontal layout as the main layout of this form
         main_layout = QHBoxLayout(self)
-        # 设置主布局内边距以及控件间距为10px
+
+        # Set the main layout inner margin and control spacing to 10px
         main_layout.setSpacing(10)
 
-        # 在主界面左侧放置画板
+        # Place the drawing board on the left side of the main screen
         main_layout.addWidget(self.__paintBoard)
 
-        # 新建垂直子布局用于放置按键
+        # Create a new vertical sublayout for placing keys
         sub_layout = QVBoxLayout()
 
-        # 设置此子布局和内部控件的间距为5px
+        # Set the spacing between this child layout and the internal controls to 5px
         sub_layout.setContentsMargins(5, 5, 5, 5)
 
-        splitter = QSplitter(self)  # 占位符
+        splitter = QSplitter(self)
         sub_layout.addWidget(splitter)
 
         self.__btn_Recognize = QPushButton("Start Recognition")
@@ -68,14 +68,14 @@ class MainWidget(QWidget):
         sub_layout.addWidget(self.__btn_Recognize)
 
         self.__btn_Clear = QPushButton("Clear")
-        self.__btn_Clear.setParent(self)  # 设置父对象为本界面
+        self.__btn_Clear.setParent(self)  # Set the parent object as the interface
 
-        # 将按键按下信号与画板清空函数相关联
+        # Associating key press signals with the drawing board clear function
         self.__btn_Clear.clicked.connect(self.__paintBoard.Clear)
         sub_layout.addWidget(self.__btn_Clear)
 
         self.__btn_Quit = QPushButton("Quit")
-        self.__btn_Quit.setParent(self)  # 设置父对象为本界面
+        self.__btn_Quit.setParent(self)  # Set the parent object as the interface
         self.__btn_Quit.clicked.connect(self.Quit)
         sub_layout.addWidget(self.__btn_Quit)
 
@@ -96,11 +96,11 @@ class MainWidget(QWidget):
 
         self.__spinBox_penThickness = QSpinBox(self)
         self.__spinBox_penThickness.setMaximum(20)
-        self.__spinBox_penThickness.setMinimum(2)
-        self.__spinBox_penThickness.setValue(10)  # 默认粗细为10
-        self.__spinBox_penThickness.setSingleStep(2)  # 最小变化值为2
+        self.__spinBox_penThickness.setMinimum(10)
+        self.__spinBox_penThickness.setValue(20)  # Default thickness is 10
+        self.__spinBox_penThickness.setSingleStep(5)  # Minimum change value of 2
         self.__spinBox_penThickness.valueChanged.connect(
-            self.on_PenThicknessChange)  # 关联spinBox值变化信号和函数on_PenThicknessChange
+            self.on_PenThicknessChange)  # Associated spinBox value change signal and function on_PenThicknessChange
         sub_layout.addWidget(self.__spinBox_penThickness)
 
         self.__label_penColor = QLabel(self)
@@ -109,12 +109,12 @@ class MainWidget(QWidget):
         sub_layout.addWidget(self.__label_penColor)
 
         self.__comboBox_penColor = QComboBox(self)
-        self.__fillColorList(self.__comboBox_penColor)  # 用各种颜色填充下拉列表
+        self.__fillColorList(self.__comboBox_penColor)  # Fill the drop-down list with various colors
         self.__comboBox_penColor.currentIndexChanged.connect(
-            self.on_PenColorChange)  # 关联下拉列表的当前索引变更信号与函数on_PenColorChange
+            self.on_PenColorChange)  # Associating the current index change signal of the drop-down list with the function on_PenColorChange
         sub_layout.addWidget(self.__comboBox_penColor)
 
-        main_layout.addLayout(sub_layout)  # 将子布局加入主布局
+        main_layout.addLayout(sub_layout)  # Adding child layouts to the main layout
 
     def __fillColorList(self, comboBox):
 
@@ -153,17 +153,17 @@ class MainWidget(QWidget):
 
     def on_cbtn_Eraser_clicked(self):
         if self.__cbtn_Eraser.isChecked():
-            self.__paintBoard.EraserMode = True  # 进入橡皮擦模式
+            self.__paintBoard.EraserMode = True  # Enter eraser mode
         else:
-            self.__paintBoard.EraserMode = False  # 退出橡皮擦模式
+            self.__paintBoard.EraserMode = False  # Exit eraser mode
 
 
     def on_btn_Recognize_Clicked(self):
-        savePath = "E:/Computer Science/hand_written_digits_recognition/PNG/text.png"
+        savePath = "./PNG/text.png"
         image = self.__paintBoard.GetContentAsQImage()
         image.save(savePath)
         print(savePath)
-        # 加载图像
+        # load graph
         img = tf.keras.preprocessing.image.load_img(savePath, target_size=(28, 28))
         img = img.convert('L')
         x = tf.keras.preprocessing.image.img_to_array(img)
@@ -171,7 +171,7 @@ class MainWidget(QWidget):
         # x = x.reshape(28,28)
         x = np.expand_dims(x, axis=0)
         x = x / 255.0
-        new_model = keras.models.load_model("E:/Computer Science/hand_written_digits_recognition/model.h5")
+        new_model = keras.models.load_model("./model.h5")
         prediction = new_model.predict(x)
         output = np.argmax(prediction, axis=1)
         print("Handwritten numeric recognition as：" + str(output[0]))

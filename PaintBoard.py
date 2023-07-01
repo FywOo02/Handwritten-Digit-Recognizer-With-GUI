@@ -19,91 +19,92 @@ class PaintBoard(QWidget):
         '''
         super().__init__(Parent)
 
-        self.__InitData()  # 先初始化数据，再初始化界面
+        self.__InitData()  # Initialize data first, then initialize the interface
         self.__InitView()
 
     def __InitData(self):
 
-        self.__size = QSize(480, 460)
+        self.__size = QSize(640, 480)
 
-        # 新建QPixmap作为画板，尺寸为__size
+        # Create a new QPixmap as a drawing board with the size __size
         self.__board = QPixmap(self.__size)
-        self.__board.fill(Qt.white)  # 用白色填充画板
+        self.__board.fill(Qt.white)  # Fill the panel with white
 
-        self.__IsEmpty = True  # 默认为空画板
-        self.EraserMode = False  # 默认为禁用橡皮擦模式
+        self.__IsEmpty = True  # Default is empty drawing board
+        self.EraserMode = False  # Default is to disable eraser mode
 
-        self.__lastPos = QPoint(0, 0)  # 上一次鼠标位置
-        self.__currentPos = QPoint(0, 0)  # 当前的鼠标位置
+        self.__lastPos = QPoint(0, 0)  # Last mouse position
+        self.__currentPos = QPoint(0, 0)  # Current mouse position
 
-        self.__painter = QPainter()  # 新建绘图工具
+        self.__painter = QPainter()  # New drawing tool
 
-        self.__thickness = 10  # 默认画笔粗细为10px
-        self.__penColor = QColor("black")  # 设置默认画笔颜色为黑色
-        self.__colorList = QColor.colorNames()  # 获取颜色列表
+        self.__thickness = 20  # Default brush thickness is 10px
+        self.__penColor = QColor("black")  # Set the default brush color to black
+        self.__colorList = QColor.colorNames()  # Get a list of colors
 
     def __InitView(self):
-        # 设置界面的尺寸为__size
+        # Set the size of the interface to __size
         self.setFixedSize(self.__size)
 
     def Clear(self):
-        # 清空画板
+        # clear panel
         self.__board.fill(Qt.white)
         self.update()
         self.__IsEmpty = True
 
     def ChangePenColor(self, color="black"):
-        # 改变画笔颜色
+        # change the color of pen
         self.__penColor = QColor(color)
 
-    def ChangePenThickness(self, thickness=10):
-        # 改变画笔粗细
+    def ChangePenThickness(self, thickness=20):
+        # change the thickness of pen
         self.__thickness = thickness
 
     def IsEmpty(self):
-        # 返回画板是否为空
+        # return if panel is empty
         return self.__IsEmpty
 
     def GetContentAsQImage(self):
-        # 获取画板内容（返回QImage）
+        # Get the contents of the drawing board (return QImage)
         image = self.__board.toImage()
         return image
 
     def paintEvent(self, paintEvent):
-        # 绘图事件
-        # 绘图时必须使用QPainter的实例，此处为__painter
-        # 绘图在begin()函数与end()函数间进行
-        # begin(param)的参数要指定绘图设备，即把图画在哪里
-        # drawPixmap用于绘制QPixmap类型的对象
+        # Paint events
+        # An instance of QPainter must be used when drawing, in this case __painter
+        # The drawing is done between the begin() function and the end() function
+        # begin(param) parameter to specify the drawing device, i.e. where to draw the map
+        # drawPixmap is used to draw objects of type QPixmap
         self.__painter.begin(self)
-        # 0,0为绘图的左上角起点的坐标，__board即要绘制的图
+        # 0,0 are the coordinates of the starting point of the upper left corner of the drawing, __board is the
+        # drawing to be drawn
         self.__painter.drawPixmap(0, 0, self.__board)
         self.__painter.end()
 
     def mousePressEvent(self, mouseEvent):
-        # 鼠标按下时，获取鼠标的当前位置保存为上一次位置
+        # When the mouse is pressed, get the current position of the mouse and save it as the last position
         self.__currentPos = mouseEvent.pos()
         self.__lastPos = self.__currentPos
 
     def mouseMoveEvent(self, mouseEvent):
-        # 鼠标移动时，更新当前位置，并在上一个位置和当前位置间画线
+        # Update the current position when the mouse moves and draw a line between the previous position and the current position
         self.__currentPos = mouseEvent.pos()
         self.__painter.begin(self.__board)
 
         if self.EraserMode == False:
-            # 非橡皮擦模式
-            self.__painter.setPen(QPen(self.__penColor, self.__thickness))  # 设置画笔颜色，粗细
+            # Non-eraser mode
+            self.__painter.setPen(QPen(self.__penColor, self.__thickness))  # Set brush color, thickness
         else:
-            # 橡皮擦模式下画笔为纯白色，粗细为10
+            # The brush in eraser mode is pure white with a thickness of 10
             self.__painter.setPen(QPen(Qt.white, 10))
 
-        # 画线
+        # draw a line
         self.__painter.drawLine(self.__lastPos, self.__currentPos)
         self.__painter.end()
         self.__lastPos = self.__currentPos
 
-        self.update()  # 更新显示
+        self.update()  # Update display
 
     def mouseReleaseEvent(self, mouseEvent):
-        self.__IsEmpty = False  # 画板不再为空
+        self.__IsEmpty = False  # The drawing board is no longer empty
 

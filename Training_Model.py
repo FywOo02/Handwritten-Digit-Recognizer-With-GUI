@@ -21,6 +21,8 @@ epochs = 10
 # input is a 28*28 grayscale map
 img_rows, img_cols = 28, 28
 
+drop_out = 0.25
+
 ###############################################    data processing   ###############################################
 
 # load data
@@ -55,14 +57,14 @@ model.add(Conv2D(filters=16, kernel_size=(5, 5), padding='same', activation='rel
 
 # first POOL
 model.add(MaxPool2D(pool_size=(2, 2)))
-model.add(Dropout(0.25))
+model.add(Dropout(drop_out))
 
 # second CONV
 model.add(Conv2D(filters=32, kernel_size=(5, 5), padding='same', activation='relu'))
 
 # second POOL
 model.add(MaxPool2D(pool_size=(2, 2)))
-model.add(Dropout(0.25))
+model.add(Dropout(drop_out))
 
 # third CONV
 model.add(Conv2D(filters=64, kernel_size=(5, 5), padding='same', activation='relu'))
@@ -72,13 +74,13 @@ model.add(Conv2D(filters=128, kernel_size=(5, 5), padding='same', activation='re
 
 # third POOL
 model.add(MaxPool2D(pool_size=(2, 2)))
-model.add(Dropout(0.25))
+model.add(Dropout(drop_out))
 
 # flat the graph
 model.add(Flatten())
 # FC
 model.add(Dense(128, activation='relu'))
-model.add(Dropout(0.25))
+model.add(Dropout(drop_out))
 
 # activation function - 'softmax'
 model.add(Dense(num_size, activation='softmax'))
@@ -116,7 +118,7 @@ for v in model.trainable_variables:
 file.close()
 
 # save the model to local
-model.save('E:\Computer Science\hand_written_digits_recognition\model.h5')
+model.save('./model.h5')
 
 ###############################################    show   ###############################################
 

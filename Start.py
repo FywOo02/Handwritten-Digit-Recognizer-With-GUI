@@ -14,10 +14,10 @@ import sys
 def main():
     app = QApplication(sys.argv)
 
-    mainWidget = MainWidget()  # 新建一个主界面
-    mainWidget.show()  # 显示主界面
+    mainWidget = MainWidget()  # Create a new main screen
+    mainWidget.show()  # Show main screen
 
-    exit(app.exec_())  # 进入消息循环
+    exit(app.exec_())  # Enter the message loop
 
 
 if __name__ == '__main__':
