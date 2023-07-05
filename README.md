@@ -15,8 +15,8 @@
 <img src="https://github.com/FywOo02/Handwritten-Digit-Recognizer-With-GUI/blob/main/Resorces/mnist%20graph.png">
 </div>
 
-## What is the structure of this CNN model
-- 4 convolutional layers + 3 maximum pooling layers + 1 flatten layer + 1 fully connected layer
+## What is the structure of this CNN model？
+### 4 convolution layers + 3 max-pooling layers + 1 flatten layer + 1 fully connected layer
 <div align=center>
 <img src="https://github.com/FywOo02/Handwritten-Digit-Recognizer-With-GUI/blob/main/Resorces/CNN.png">
 </div>
@@ -43,6 +43,7 @@ python start.py
 <div align=center>
 <img src="https://github.com/FywOo02/Handwritten-Digit-Recognizer-With-GUI/blob/main/Resorces/result.png">
 </div>
+
 
 ## File Descriptions
 ```
